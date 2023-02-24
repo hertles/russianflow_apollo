@@ -1,0 +1,33 @@
+.Point{
+    border-radius: 10px;
+    margin: 10px;
+    min-height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-image: linear-gradient(to bottom, #5a998d, #51867c);
+    padding: 20px;
+}
+.image{
+    object-fit: cover;
+    width: 300px;
+    height: 300px;
+    border-radius: 5px;
+    border: 2px solid #202020;
+    cursor: pointer;
+}
+.name{
+    font-size: 25px;
+    font-weight: bold;
+    border-bottom: 2px solid #202020;
+    margin: 10px 0;
+    text-align: center;
+}
+.descr{
+    text-align: center;
+}
+.cord,.type{
+    opacity: 80%;
+    font-size: 15px;
+}

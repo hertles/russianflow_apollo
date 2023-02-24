@@ -1,0 +1,25 @@
+type Point{
+    id: ID!,
+    x: Float!,
+    y: Float!,
+    type: String,
+    name: String!,
+    descr: String,
+    photo_url: String,
+    river: String
+}
+type Route{
+    id: ID!,
+    x: Float!,
+    y: Float!,
+    type: String,
+    name: String!,
+    descr: String,
+    photo_url: String,
+    rating: Int
+}
+type Query{
+    getAllPoints: [Point],
+    getAllRoutes: [Route],
+    getPoint(id: ID!): Point!
+}

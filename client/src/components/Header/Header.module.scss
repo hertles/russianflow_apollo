@@ -1,0 +1,50 @@
+.Header{
+    position: fixed;
+    width: 100vw;
+    height: 73px;
+    top: 0;
+    right: 0;
+    background-color: #202020;
+    display:flex;
+    align-items: center;
+    z-index: 100;
+    color: #b1d2db;
+}
+.logo {
+    position: absolute;
+    display: block;
+    width: 200px;
+    height: 100%;
+    left: 1vw;
+    top: 0vh;
+    object-fit: cover;
+    filter: grayscale(1);
+    &:hover{
+        filter: grayscale(0);
+    }
+}
+.logoOuter{
+    width: 220px;
+    display: flex;
+}
+.RussianFlow{
+    width: 400px;
+    font-family: Montserrat;
+}
+.HeaderButtonBlock{
+    justify-self: flex-end;
+    height: 100%;
+    display: flex;
+    gap: 10px;
+}
+.HeaderButton{
+    background-color: #202020;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    padding: 0px 20px;
+    cursor: pointer;
+}
+.HeaderButton:hover{
+    filter: brightness(1.2);
+}

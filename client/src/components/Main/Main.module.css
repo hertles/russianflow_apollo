@@ -1,0 +1,7 @@
+.Main{
+    height: 100%;
+    grid-area: c;
+    width: 70%;
+    background-color: #181818;
+    margin: 0 auto;
+}
