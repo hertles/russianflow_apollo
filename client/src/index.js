@@ -5,17 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client'
 import {BrowserRouter} from 'react-router-dom'
-import { offline } from 'redux-offline';
-import offlineConfig from 'redux-offline/lib/defaults';
-import {applyMiddleware, combineReducers, compose, createStore} from "redux";
-//import offline from 'apollo-offline';
-//import config from 'redux-offline/lib/defaults';
-/*const { enhancer, networkInterface } = offline(
-    createNetworkInterface({
-        uri: `http://localhost`,
-    }),
-);*/
-
 
 
 
@@ -26,23 +15,7 @@ const client = new ApolloClient({
 
 
 
-/*
-export const store = createStore(
-    combineReducers({ apollo: client }),
-    undefined,
-    applyMiddleware(client.middleware())
-);
 
-*/
-
-/*export const store = createStore(
-    combineReducers({ apollo: client.reducer() }),
-    undefined,
-    compose(
-        applyMiddleware(client.middleware()),
-        offline(config)
-    )
-);*/
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>

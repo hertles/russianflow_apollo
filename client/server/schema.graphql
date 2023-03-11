@@ -1,0 +1,34 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+}
+
+type Point {
+    descr: String
+    id: ID!
+    name: String!
+    photo_url: String
+    river: String
+    type: String
+    x: Float!
+    y: Float!
+}
+
+type Query {
+    getAllPoints: [Point]
+    getAllRoutes: [Route]
+    getPoint(id: ID!): Point!
+    getRoute(id: ID!): Route
+}
+
+type Route {
+    descr: String
+    id: ID!
+    name: String!
+    photo_url: String
+    rating: Int
+    type: String
+    x: Float!
+    y: Float!
+}

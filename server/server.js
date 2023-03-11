@@ -36,7 +36,7 @@ const allRoutes = [
 ]
 const allPoints = [
     {
-        id: 1,
+        id: 0,
         x: 30.234142,
         y: 59.234123,
         type: "Стоянка",
@@ -46,7 +46,7 @@ const allPoints = [
         river: "Белая"
     },
     {
-        id: 2,
+        id: 1,
         x: 31.232303,
         y: 60.234233,
         type: "Деревня",
@@ -56,7 +56,7 @@ const allPoints = [
         river: "Койва"
     },
     {
-        id: 3,
+        id: 2,
         x: 31.232303,
         y: 60.234233,
         type: "Перекат",
@@ -73,6 +73,9 @@ const root = {
     },
     getPoint: params => {
         return allPoints.find(point => point.id === params.id);
+    },
+    getRoute: params => {
+        return allRoutes.find(route => route.id === params.id);
     }
 
 };
@@ -94,7 +97,7 @@ app.use(
         graphiql: true
     })
 );
-app.get('/src/images/:z/:x/:y',(req,res)=>{
-    res.status(200).type('image/png').sendFile(path.resolve(`./Maps/kusye/${req.params.z}/${req.params.x}/${req.params.y}.png`))
+app.get('/src/images/maps/:id/:z/:x/:y',(req,res)=>{
+    res.status(200).type('image/png').sendFile(path.resolve(`./Maps/${req.params.id}/${req.params.z}/${req.params.x}/${req.params.y}.png`))
 })
 app.listen(5000, () => console.log('server started on port 5000'));

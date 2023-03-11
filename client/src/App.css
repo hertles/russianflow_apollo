@@ -68,8 +68,16 @@ a,a:active,a:visited,a:link{
 .BigMap>.Map{
 
 }
-.RouteMap>.Map{
-
+.RouteMapPage{
+  display: grid;
+  grid-template-areas: "m d";
+  grid-template-columns: auto 300px;
+}
+.RouteMapPage>.Map{
+  grid-area: m;
+}
+.toCenter{
+  margin: 0 auto
 }
 .leaflet-container {
   width: 100%;

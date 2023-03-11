@@ -9,7 +9,7 @@ import MapComponent from "../MapComponent/MapComponent";
 function Point(props) {
     const {id} = useParams()
     const [point, setPoint] = useState({})
-    const {data, error, loading} = useQuery(GET_POINT, {
+    const {data, loading} = useQuery(GET_POINT, {
         variables: {id: Number(id)}
     })
     useEffect(() => {

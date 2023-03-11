@@ -21,5 +21,6 @@ type Route{
 type Query{
     getAllPoints: [Point],
     getAllRoutes: [Route],
-    getPoint(id: ID!): Point!
+    getPoint(id: ID!): Point!,
+    getRoute(id: ID!): Route
 }

@@ -1,0 +1,7 @@
+query getRoute($id: ID!) {
+    getRoute(id: $id){
+        id,
+        x,
+        y
+    }
+}
