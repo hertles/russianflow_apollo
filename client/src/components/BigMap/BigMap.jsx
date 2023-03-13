@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import MapComponent from "../common/MapComponent/MapComponent";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import {useQuery} from "@apollo/client";
-import {GET_ALL_ROUTES} from "../../graphql/getAllRoutes";
+import GET_ALL_ROUTES from "../../graphql/getAllRoutes.js";
 import {NavLink} from "react-router-dom";
 
 function BigMap(props) {

@@ -9,17 +9,16 @@ type Point {
     id: ID!
     name: String!
     photo_url: String
-    river: String
     type: String
     x: Float!
     y: Float!
 }
 
 type Query {
-    getAllPoints: [Point]
+    getAllPoints(routeId: ID!): [Point]
     getAllRoutes: [Route]
     getPoint(id: ID!): Point!
-    getRoute(id: ID!): Route
+    getRoute(id: ID!): Route!
 }
 
 type Route {

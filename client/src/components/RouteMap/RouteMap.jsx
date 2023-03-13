@@ -2,31 +2,44 @@ import React, {useEffect, useRef, useState} from 'react';
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import {NavLink, useParams} from "react-router-dom";
 import {useQuery} from "@apollo/client";
-import {GET_ROUTE} from "../../graphql/getRoute";
-import {GET_ALL_POINTS} from "../../graphql/getAllPoints";
-import style from './RouteMap.module.css'
+import GET_ROUTE from "../../graphql/getRoute.js";
+import GET_ALL_POINTS from "../../graphql/getAllPoints.js";
+import style from './RouteMap.module.scss'
 import RouteDescription from "../RouteDescription/RouteDescription";
+import GET_ALL_ROUTES from "../../graphql/getAllRoutes.js";
 
 const RouteMap = (props) => {
     const {id} = useParams()
     const [points, setPoints] = useState([])
-    const {loading: routeLoading, data: routeData, error} = useQuery(GET_ROUTE, {
+    const {loading: routeLoading, data: routeData, error: routeError} = useQuery(GET_ROUTE, {
         variables: {id: Number(id)}
     })
-    // const {loading: pointsLoading, data: pointsData} = useQuery(GET_ALL_POINTS)
-/*    useEffect(() => {
+    const {loading: pointsLoading, data: pointsData, error: pointsError} = useQuery(GET_ALL_POINTS, {
+        variables: {routeId: Number(id)}
+    })
+    const {loading: routesLoading, data: routesData, error: routesError} = useQuery(GET_ALL_ROUTES)
+    useEffect(() => {
+        console.log("data: ",pointsData,routeData,routesData)
+
+    }, [routeData])
+    useEffect(() => {
+        console.log("errors: " ,pointsError,routeError, routesError)
+
+    }, [pointsError,routeError, routesError])
+
+    useEffect(() => {
         if (!pointsLoading) {
             setPoints(pointsData.getAllPoints)
         }
-    })
+    }, [pointsLoading])
+    useEffect(() => {
+        console.log(points)
+    }, [points])
     if (pointsLoading) {
         return <div className="PointList">
             <div className="Point">Загрузка...</div>
         </div>
-    })*/
-    useEffect(()=>{
-        error && alert(error)
-    },[error])
+    }
     const center = [58.271508, 58.033283];
     return (
         <div className={"RouteMapPage"}>
@@ -40,10 +53,25 @@ const RouteMap = (props) => {
                     {/* <Marker>
                         <Popup></Popup>
                     </Marker>*/}
-
+                    {points?.map(point => (
+                        <Marker position={[point.x, point.y]}>
+                            <Popup className={style.popup}>
+                                <div><strong>{point.name}</strong></div>
+                                <div><strong>Тип: </strong>{point.type}</div>
+                                <div>Нажмите, чтобы узнать подробности</div>
+                                <div><img className={style.popup__pointImage} src={point.photo_url}
+                                          alt={`Изображение места №"${point.id}"`}/></div>
+                            </Popup>
+                        </Marker>
+                    ))}
                 </MapContainer>
             </div>
-            <div className={style.Description}>{routeLoading ? <div className={"toCenter"}>Загрузка...</div> : <RouteDescription route={routeData}/>}</div>
+
+
+            <div className={"MapDescription"}>{routeLoading ? <div className={"toCenter"}>Загрузка...</div> :
+                <RouteDescription route={routeData.getRoute}/>}</div>
+
+
 
         </div>
     );

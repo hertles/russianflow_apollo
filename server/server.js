@@ -20,7 +20,7 @@ const allRoutes = [
         type: 'river',
         name: 'Маршрут по рекам: Койва и Чусовая',
         descr: "Стремительная и маленькая Койва впадает в Чусовую. Недалеко от впадения Койвы можно залезть на Красный камень",
-        photo_url: null,
+        photo_url: "https://static.tildacdn.com/tild6133-3030-4039-b165-653265366134/koiva-34.jpg",
         rating: 3
     },
     {
@@ -30,30 +30,30 @@ const allRoutes = [
         type: 'river',
         name: 'Маршрут по реке Ай от деревни Асылгужино до села Лаклы',
         descr: "Попадая в круг, в первую очередь включи Михаила Круга",
-        photo_url: null,
+        photo_url: "https://photocentra.ru/images/main46/466947_main.jpg",
         rating: 5
     },
 ]
 const allPoints = [
     {
         id: 0,
-        x: 30.234142,
-        y: 59.234123,
-        type: "Стоянка",
-        name: "Хорошее стояночное место",
-        descr: "Гейл и Роб переезжают в квартиру и находят старинный холодильник. Открыв его, чтобы достать лед, они находят крошечного сохранившегося мамонта, а вернувшись в морозильник, обнаруживают быстро развивающуюся цивилизацию, расширенную во времени. В течение десяти минут цивилизация переходит от средневековой эпохи к промышленной революции, а затем к современности, но через несколько минут они видят, как цивилизация использует тактическую ядерную войну, которая сжигает лицо Роба. Обнаружив, что цивилизация холодильника обостряет их войну, они закрывают морозильник и заказывают пиццу. Через час, испугавшись, что им это не удастся, они открывают морозильник и обнаруживают, что цивилизация восстановилась и продвинулась дальше в свое будущее с развитием технологий на беспрецедентном уровне. В конечном счете они эволюционируют в расу энергетических существ, возвращаются в сингулярность и исчезают из морозильника. Полагая, что мини-люди ушли, Роб отключает холодильник, чтобы почистить его утром. Когда они завтракают, они обнаруживают, что в морозильнике теперь есть доисторический мир, где примитивные сапиенсы подвергаются нападению динозавров.В ролях : Мэри Элизабет Уинстед, Тофер Грейс, Джон Димаджио, Роджер Крейг Смит",
-        photo_url: "https://static.tildacdn.com/tild6333-3563-4239-b730-373432306432/IMG_20190511_123706.jpg",
-        river: "Белая"
+        routeId: 0,
+        x: 58.238148,
+        y: 58.195993,
+        type: "Гора",
+        name: "Красная гора",
+        descr: "На вершине поле иван-чая и замечательный вид на бескрайние леса",
+        photo_url: "https://sportishka.com/uploads/posts/2022-11/thumbs/1667556934_9-sportishka-com-p-reka-chusovaya-vkontakte-9.jpg",
     },
     {
         id: 1,
-        x: 31.232303,
-        y: 60.234233,
-        type: "Деревня",
-        name: "Деревня Нижнеперепечи",
-        descr: "Много фермерских магазинов. Связи нет",
-        photo_url: "https://vsegda-pomnim.com/uploads/posts/2022-04/1649137235_56-vsegda-pomnim-com-p-priroda-moskovskoi-oblasti-foto-58.jpg",
-        river: "Койва"
+        routeId: 0,
+        x: 58.278377,
+        y: 58.212342,
+        type: "Другое",
+        name: "Почтовый ящик",
+        descr: "Можете оставить здесь своё письмо или почитать почту от других туристов",
+        photo_url: "https://i.ibb.co/cJ4WG4F/IMG-20220729-110036.jpg",
     },
     {
         id: 2,
@@ -63,20 +63,22 @@ const allPoints = [
         name: "Перекат - камни и водоросли",
         descr: "Обплывать с правой стороны, прямо у берега",
         photo_url: "http://s2.fotokto.ru/photo/full/643/6436933.jpg",
-        river: "Койва"
     }
 ];
-
 const root = {
     getAllRoutes: () => {
         return allRoutes;
     },
+    getAllPoints: (params) => {
+        return (allPoints.filter(point => point.routeId === Number(params.routeId)))
+    },
     getPoint: params => {
-        return allPoints.find(point => point.id === params.id);
+        return allPoints.find(point => point.id === Number(params.id));
     },
     getRoute: params => {
-        return allRoutes.find(route => route.id === params.id);
+        return allRoutes.find(route => route.id === Number(params.id))
     }
+
 
 };
 
@@ -100,4 +102,4 @@ app.use(
 app.get('/src/images/maps/:id/:z/:x/:y',(req,res)=>{
     res.status(200).type('image/png').sendFile(path.resolve(`./Maps/${req.params.id}/${req.params.z}/${req.params.x}/${req.params.y}.png`))
 })
-app.listen(5000, () => console.log('server started on port 5000'));
+app.listen(5000, () => console.log('сервер заупщен на localhost:5000'));

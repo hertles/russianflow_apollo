@@ -1,6 +1,6 @@
 import {gql} from "@apollo/client";
 
-export const GET_ALL_ROUTES = gql`query{
+const GET_ALL_ROUTES = gql`query{
     getAllRoutes{
         id,
         x,
@@ -12,3 +12,5 @@ export const GET_ALL_ROUTES = gql`query{
         rating
     }
 }`
+
+export default GET_ALL_ROUTES

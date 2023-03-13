@@ -1,0 +1,15 @@
+.popup__pointImage {
+  width: 100%;
+  height: 20vh;
+  object-fit: cover;
+  filter: hue-rotate(180deg) invert(1);
+  display: block;
+  position: relative;
+  padding: 10px 0;
+}
+
+.popup {
+  width: max-content;
+  max-width: 30vw;
+  cursor: pointer;
+}

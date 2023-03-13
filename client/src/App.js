@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import React, {useEffect, useState} from "react";
 import Header from "./components/Header/Header";
 import {Routes, Route, NavLink} from 'react-router-dom'

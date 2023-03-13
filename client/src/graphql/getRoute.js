@@ -12,3 +12,5 @@ export const GET_ROUTE = gql`query getRoute($id:ID!){
         rating
     }
 }`
+
+export default GET_ROUTE
