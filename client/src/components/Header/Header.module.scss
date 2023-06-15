@@ -4,12 +4,11 @@
     height: 73px;
     top: 0;
     right: 0;
-    background-color: #202020;
+    background-color: #fff;
     display:flex;
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-    color: #b1d2db;
 }
 .logo {
     position: relative;
@@ -30,8 +29,17 @@
 }
 .RussianFlow{
     padding-right: 10%;
-    font-family: Montserrat;
     font-size: 24px;
+}
+.networkStatus{
+    position: absolute;
+    right: 0;
+    top: 63px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 0 0 0 10px;
+    display: flex;
+    flex-direction: column;
 }
 .mainButtons{
     display: flex;
@@ -47,7 +55,6 @@
     padding-right: 30px;
 }
 .HeaderButton{
-    background-color: #202020;
     height: 100%;
     display: grid;
     align-items: center;
@@ -84,7 +91,6 @@
         opacity: 0;
         visibility: hidden;
         padding: 10px;
-        background-color: #202020;
         height: fit-content;
         position: absolute;
         right: 0;

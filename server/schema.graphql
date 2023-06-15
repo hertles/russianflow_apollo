@@ -1,33 +1,51 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
-
 schema {
+    mutation: Mutation
     query: Query
 }
 
 type Point {
-    descr: String
-    id: ID!
-    name: String!
     photo_url: String
+    network: String
+    routeId: Route!
+    name: String!
     type: String
+    desc: String
     x: Float!
     y: Float!
-}
-type Route {
-    descr: String
     id: ID!
-    name: String!
+}
+
+input PointInput {
     photo_url: String
-    rating: Int
-    type: String
+    network: String
+    name: String!
+    desc: String!
+    type: String!
+    routeId: ID!
     x: Float!
     y: Float!
 }
 
+type Route {
+    photo_url: String
+    points: [Point]
+    name: String!
+    desc: String
+    type: String
+    rating: Int
+    x: Float!
+    y: Float!
+    id: ID!
+}
+
+type Mutation {
+    addPoint(point: PointInput!): Point
+}
+
 type Query {
     getAllPoints(routeId: ID!): [Point]
-    getAllRoutes: [Route]
     getPoint(id: ID!): Point!
     getRoute(id: ID!): Route!
+    getAllRoutes: [Route]
 }
 

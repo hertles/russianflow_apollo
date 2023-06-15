@@ -8,7 +8,7 @@ const GET_ALL_POINTS = gql`query getAllPoints($routeId:ID!){
         type,
         name,
         photo_url,
-        descr
+        desc
     }
 }`
 export default GET_ALL_POINTS

@@ -1,7 +1,22 @@
 .Main{
     height: 100%;
     grid-area: c;
-    width: 70%;
-    background-color: #181818;
+}
+.Cards{
+    position: relative;
+    width: 70vw;
+    height: 100vh;
     margin: 0 auto;
+    backdrop-filter: blur(10px)brightness(0.9);
+}
+.loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@media screen and (max-width: 700px) {
+    .Cards{
+        width: 100vw;
+    }
+
 }

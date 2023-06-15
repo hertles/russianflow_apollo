@@ -1,15 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import style from './Main.module.css'
-import {useParams} from "react-router-dom";
 import {useQuery} from "@apollo/client";
-import GET_POINT from "../../graphql/getPoint.js";
-import MapComponent from "../common/MapComponent/MapComponent";
+import GET_ALL_ROUTES from "../../graphql/getAllRoutes.js";
+import Card from "../common/Card/Card";
+import Preloader from "../common/Preloader/Preloader";
 
+const Main = (props) => {
+    const [routes, setRoutes] = useState([])
 
-function Main(props) {
+    const {data, loading} = useQuery(GET_ALL_ROUTES)
+    useEffect(() => {
+        if (!loading)
+            setRoutes(data.getAllRoutes)
+    }, [loading])
+    if (loading) {
+        return <div className={style.Main}>
+            <div className={`${style.Cards} ${style.loading}`}>
+                <Preloader/>
+            </div>
+        </div>
+    }
 
     return (
         <div className={style.Main}>
+            <div className={style.Cards}>
+                {routes?.map(route => {
+                    return <Card key={route.id} item={route}/>
+                })}
+            </div>
         </div>
     );
 }

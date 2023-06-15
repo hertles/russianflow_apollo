@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #000;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        font-size: 130px;
+        fill: #010000;
+        font-family: "Cascadia Mono";
+      }
+    </style>
+  </defs>
+  <circle id="Эллипс_1" data-name="Эллипс 1" class="cls-1" cx="20.5" cy="20.5" r="15.5"/>
+  <text id="i" class="cls-2" transform="translate(13.36 28.171) scale(0.174)">i</text>
+</svg>

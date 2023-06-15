@@ -1,0 +1,18 @@
+@import '../../assets/css/mixins';
+
+.NewPointForm{
+    @include flex-column;
+}
+
+.Name{
+    border-radius: 10px;
+    background-color: #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.image{
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 10px;
+}

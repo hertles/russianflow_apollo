@@ -1,0 +1,13 @@
+@import "../../../assets/css/mixins";
+
+.button {
+  @include form-field;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #eee;
+  border: 2px solid rgba(0,0,0,0.2);
+  
+  &:hover {
+    background-color: #ddd;
+  }
+}

@@ -7,7 +7,7 @@ const GET_ALL_ROUTES = gql`query{
         y,
         type,
         name,
-        descr,
+        desc,
         photo_url,
         rating
     }

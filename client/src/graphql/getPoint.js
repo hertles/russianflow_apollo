@@ -7,8 +7,9 @@ import {gql} from "@apollo/client";
         y
         type
         name
-        descr
+        desc
         photo_url
+        network
     }
 }`
 

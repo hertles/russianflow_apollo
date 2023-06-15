@@ -7,7 +7,7 @@ export const GET_ROUTE = gql`query getRoute($id:ID!){
         y,
         type,
         name,
-        descr,
+        desc,
         photo_url,
         rating
     }

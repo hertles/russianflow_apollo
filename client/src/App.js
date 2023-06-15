@@ -1,7 +1,7 @@
-import './App.scss';
-import React, {useEffect, useState} from "react";
+import './assets/css/main.scss';
+import React from "react";
 import Header from "./components/Header/Header";
-import {Routes, Route, NavLink} from 'react-router-dom'
+import {Routes, Route} from 'react-router-dom'
 import Main from "./components/Main/Main";
 import 'leaflet/dist/leaflet.css';
 import BigMap from "./components/BigMap/BigMap";
@@ -16,8 +16,8 @@ function App() {
                 <div className="Content">
                     <Routes>
                         <Route exact path={'/'} element={<Main/>}/>
-                        <Route exact path={'map'} element={<BigMap/>}/>
-                        <Route exact path={'map/:id'} element={<RouteMap/>}/>
+                        <Route exact path={'/map'} element={<BigMap/>}/>
+                        <Route exact path={'/map/:id/'} element={<RouteMap/>}/>
                     </Routes>
                 </div>
             </div>

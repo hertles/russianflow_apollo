@@ -1,8 +1,14 @@
 .Point{
+    display: inline-block;
+    width: inherit;
+}
+.innerPoint{
     border-radius: 10px;
     margin: 10px;
-    min-height: 80%;
-    display: flex;
+    width: 400px;
+    height: fit-content;
+    position: relative;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -11,8 +17,8 @@
 }
 .image{
     object-fit: cover;
-    width: 300px;
-    height: 300px;
+    width: 80%;
+    height: 200px;
     border-radius: 5px;
     border: 2px solid #202020;
     cursor: pointer;
@@ -24,7 +30,7 @@
     margin: 10px 0;
     text-align: center;
 }
-.descr{
+.desc{
     text-align: center;
 }
 .cord,.type{

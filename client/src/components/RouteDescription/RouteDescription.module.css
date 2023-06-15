@@ -1,9 +1,6 @@
-.RouteDescription{
-
-}
 .Name{
-    border-radius: 10px;
-    background-color: #202020;
+    border-radius: 4px;
+    background-color: #ddd;
     padding: 10px;
     text-align: center;
 }

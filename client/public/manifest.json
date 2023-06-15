@@ -10,7 +10,8 @@
     {
       "src": "logo96.png",
       "type": "image/png",
-      "sizes": "96x96"
+      "sizes": "96x96",
+      "purpose": "maskable.png"
     },
     {
       "src": "logo192.png",
@@ -29,6 +30,7 @@
     }
   ],
   "start_url": ".",
+
   "display": "standalone",
   "theme_color": "#202020",
   "background_color": "#202020"

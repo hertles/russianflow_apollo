@@ -1,0 +1,13 @@
+@import "../../../assets/css/mixins";
+
+.textarea {
+  @include form-field;
+  min-width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 10px 0;
+  display: block;
+  resize: none;
+
+}
+

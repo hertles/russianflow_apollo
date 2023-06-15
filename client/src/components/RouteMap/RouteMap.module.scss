@@ -1,15 +1,95 @@
+@import "../../assets/css/mixins";
+
 .popup__pointImage {
   width: 100%;
   height: 20vh;
   object-fit: cover;
-  filter: hue-rotate(180deg) invert(1);
   display: block;
   position: relative;
   padding: 10px 0;
+  border-radius: 10px;
 }
 
-.popup {
-  width: max-content;
-  max-width: 30vw;
+.RouteMap {
+  display: flex;
+
+  & > .Map {
+    display: block;
+    width: 70%;
+    position: relative;
+  }
+}
+
+.MapDescription {
+  position: relative;
+  padding: 10px;
+  width: 30%;
+  height: 100%;
+  background-color: #eee;
+  border: 10px transparent;
+  overflow: auto;
+
+  &:after {
+    padding: 10px;
+  }
+}
+
+.controlPanel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.controlButton {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  background-color: #eee;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-radius: 4px;
   cursor: pointer;
+
+  & > img {
+    margin: 0 auto;
+    width: 80%;
+  }
+
+  &:hover {
+    background-color: #ddd;
+  }
+
+  &__active {
+    background-color: #ccc;
+
+    &:hover {
+      background-color: #bbb;
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  body {
+    overflow-y: hidden;
+  }
+
+  .RouteMap {
+    display: grid;
+    width: 100%;
+    grid-template-areas: "m" "d";
+    grid-template-rows: auto 30%;
+
+    & > .Map {
+      overflow: hidden;
+      grid-area: m;
+      width: 100%;
+    }
+  }
+
+  .MapDescription {
+    grid-area: d;
+    width: 100%;
+  }
 }
