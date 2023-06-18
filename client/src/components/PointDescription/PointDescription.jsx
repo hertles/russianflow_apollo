@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import style from './PointDescription.module.css'
-import {useApolloClient, useQuery} from "@apollo/client";
+import style from './PointDescription.module.scss'
+import {useQuery} from "@apollo/client";
 import GET_POINT from "../../graphql/getPoint";
-import {useParams, useSearchParams} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
+import Button from "../common/Button/Button";
 
 const PointDescription = () => {
     const [search] = useSearchParams()
@@ -12,22 +13,28 @@ const PointDescription = () => {
 
     useEffect(() => {
         if (!loading) {
-            setPoint(data.getPoint)
+            setPoint(data.point)
         }
-    }, [loading,pointId])
+    }, [loading, pointId])
     if (loading) {
         return <div className={"toCenter"}>Загрузка...</div>
     }
-    if (point) {
+    console.log(point)
+    if (point.name) {
         return (
-            <div>
-                <div className={style.Name}>{point.name}</div>
-                <div><img className={style.image} src={point.photo_url} alt="Фото точки на карте"/></div>
-                <div><strong>Тип точки: </strong>{point.type}</div>
-                <div><strong>Описание: </strong>{point.desc}</div>
-                <div><strong>Связь: </strong>{point.network}</div>
-                <div><strong>x: </strong>{point.x}</div>
-                <div><strong>y: </strong>{point.y}</div>
+            <div className={style.pointDescription}>
+                <div className={style.name}>{point.name}</div>
+                {point.croppedImage && <img className={style.image} src={point.croppedImage.url}/>}
+                <div className={style.info}>
+                    <div><strong>Тип точки: </strong>{point.category.name}</div>
+                    <div><strong>Описание: </strong>{point.desc}</div>
+                    <div><strong>Связь: </strong>{point.network}</div>
+                    <div><strong>x: </strong>{point.x}</div>
+                    <div><strong>y: </strong>{point.y}</div>
+                </div>
+                <div className={style.buttons}>
+                    <Button type={"button"} title={"Удалить точку"}/>
+                </div>
             </div>
         );
     }

@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import MapComponent from "../common/MapComponent/MapComponent";
-import L from 'leaflet'
-import {Circle, CircleMarker, MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, TileLayer, Tooltip} from "react-leaflet";
 import {useQuery} from "@apollo/client";
 import GET_ALL_ROUTES from "../../graphql/getAllRoutes.js";
 import {NavLink} from "react-router-dom";
-import userIcon from '../../assets/images/user.svg'
+import LocationMarker from "../common/LocationMarker/LocationMarker";
+import L from "leaflet";
+
 function BigMap(props) {
+    L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.5.0/dist/images/";
     const [position, setPosition] = useState({coords: [51.505, -0.09], accuracy: 1000})
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -17,22 +18,13 @@ function BigMap(props) {
             (error) => console.log(error)
         )
     }, [])
-    const iconPerson = new L.Icon({
-        iconUrl: userIcon,
-        iconRetinaUrl: userIcon,
-        iconSize: new L.Point(30, 45),
-        popupAnchor: [0,-25]
-    });
-
     const [routes, setRoutes] = useState([])
     const {loading, data} = useQuery(GET_ALL_ROUTES)
     useEffect(() => {
-
         if (!loading) {
-            setRoutes(data.getAllRoutes)
-            console.log(data.getAllRoutes)
+            setRoutes(data.routes)
         }
-    })
+    },[loading,data])
     if (loading) {
         return <div className="PointList">
             <div className="Point">Загрузка...</div>
@@ -49,27 +41,14 @@ function BigMap(props) {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {routes.map(route => (
-                    <Marker position={[route.x, route.y]}>
-                        <Popup>
+                    <Marker key={route.id} position={[route.x, route.y]}>
+                        <Tooltip className="markerTooltip" direction={"top"}>
                             <div>{route.name}</div>
                             <div><NavLink to={`${route.id}/`}>Перейти к маршруту</NavLink></div>
-                        </Popup>
+                        </Tooltip>
                     </Marker>
                 ))}
-                <Marker position={position.coords} radius={10} color="red" icon={iconPerson}>
-                    <Popup>
-                        <div><strong>Это вы</strong></div>
-                        <div><strong>Ваши координаты: </strong></div>
-                        <div><strong>x: </strong> {position.coords[0]}</div>
-                        <div><strong>y: </strong> {position.coords[1]}</div>
-                        <div><strong>Точность определения: </strong> {position.accuracy} метров</div>
-                    </Popup>
-                </Marker>
-                <Circle center={position.coords} radius={(position.accuracy)}>
-                    <Popup>
-                        <div><strong>Точность определения: </strong> {position.accuracy} метров</div>
-                    </Popup>
-                </Circle>
+                <LocationMarker position={position}/>
             </MapContainer>
         </div>
     );

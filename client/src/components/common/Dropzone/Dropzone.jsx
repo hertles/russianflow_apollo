@@ -12,6 +12,7 @@ export const Dropzone = props => {
             noDrag: true,
             onDrop: (acceptedFiles) => {
                 const files = [...acceptedFiles]
+                console.log(files)
                 setFiles(files);
                 if (props.onChange) {
                     props.onChange(files);
@@ -25,7 +26,7 @@ export const Dropzone = props => {
                 setPhoto(URL.createObjectURL(files[0]))
             }
         } else {
-            let photo = props.photo ? props.photo : imagePlaceholder
+            const photo = props.photo ? URL.createObjectURL(props.photo[0]) : imagePlaceholder
             setPhoto(photo)
         }
     }, [files])
@@ -34,7 +35,7 @@ export const Dropzone = props => {
         <img
             className={style.photo}
             src={photo}
-            alt="your profile image"
+            alt="your image"
         />
         <input
             className={style.choosePhotoInput}

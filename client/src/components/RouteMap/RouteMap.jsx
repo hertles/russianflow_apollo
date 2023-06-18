@@ -4,7 +4,6 @@ import {MapContainer, Marker, Popup, TileLayer, Tooltip, useMapEvents} from "rea
 import {useParams, useSearchParams} from "react-router-dom";
 import {useQuery, useReactiveVar} from "@apollo/client";
 import GET_ROUTE from "../../graphql/getRoute.js";
-import GET_ALL_POINTS from "../../graphql/getAllPoints.js";
 import RouteDescription from "../RouteDescription/RouteDescription";
 import PointDescription from "../PointDescription/PointDescription";
 import {createMarkerIcon} from "../../utils/createMarkerIcon";
@@ -12,8 +11,8 @@ import info from '../../assets/images/info.svg'
 import newMarker from '../../assets/images/new marker.png'
 import classNames from "classnames";
 import NewPointForm from "../NewPointForm/NewPointForm";
-import {newPointVar, pointsVar} from "../../store";
-import {NewMarker} from "../NewMarker/NewMarker";
+import {newPointVar, newPointVarInitial, pointsVar} from "../../store";
+import {NewMarker} from "../common/NewMarker/NewMarker";
 
 const RouteMap = (props) => {
     const {id} = useParams()
@@ -32,27 +31,27 @@ const RouteMap = (props) => {
     const [addingPointMode, setAddingPointMode] = useState(false)
 
     const {loading: routeLoading, data: routeData} = useQuery(GET_ROUTE, {
-        variables: {id: Number(id)}
-    })
-    const {loading: pointsLoading, data: pointsData} = useQuery(GET_ALL_POINTS, {
-        variables: {routeId: Number(id)}
+        variables: {id: id}
     })
 
     const newPointLocation = useReactiveVar(newPointVar)
 
     useEffect(() => {
-        if (!pointsLoading) {
-            pointsVar(pointsData.getAllPoints)
+        if (!routeLoading) {
+            pointsVar(routeData.route.points)
+            if (routeData.route.id !== newPointVar().routeId) {
+                newPointVar(newPointVarInitial)
+            }
         }
-    }, [pointsLoading, pointsData])
+    }, [routeLoading, routeData])
     useLayoutEffect(() => {
         if (!routeLoading) {
-            if (!pointsLoading && points.length > 0 && pointId !== null) {
+            if (!routeLoading && points.length > 0 && pointId !== null) {
                 const {x, y} = points.find(point => point.id === pointId)
                 setCenter([x, y])
             }
-            if (!pointsLoading && pointId === null) {
-                const {x, y} = routeData.getRoute
+            if (!routeLoading && pointId === null) {
+                const {x, y} = routeData.route
                 setCenter([x, y])
             }
         }
@@ -63,12 +62,18 @@ const RouteMap = (props) => {
         setSearch(search.toString())
     }
 
+    const showRouteInfo = () => {
+        removeSearchParams()
+        if (addingPointMode)
+            setAddingPointMode(false)
+    }
+
     const switchAddingMode = () => {
         removeSearchParams()
         setAddingPointMode(!addingPointMode)
     }
 
-    if (center.length < 2 || pointsLoading) {
+    if (center.length < 2 || routeLoading) {
         return <div className="PointList">
             <div className="Point">Загрузка...</div>
         </div>
@@ -81,9 +86,10 @@ const RouteMap = (props) => {
                 <MapContainer zoom={7} center={center} minZoom={12} maxZoom={14}>
                     <TileLayer
                         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        url={`http://localhost:5000/src/images/maps/${id}/{z}/{x}/{y}`}
+                        url={`http://localhost:2020/api/maps/${id}/{z}/{x}/{y}.png`}
                     />
                     {points.map(point => {
+                        const markerIcon = point.id === pointId ? createMarkerIcon(point.category.activeImage.url) : createMarkerIcon(point.category.image.url)
                         return (
                             <Marker
                                 key={point.id}
@@ -93,11 +99,11 @@ const RouteMap = (props) => {
                                         setSearch({point: point.id})
                                     },
                                 }}
-                                icon={createMarkerIcon(point.type, point.id === pointId)}
+                                icon={markerIcon}
                             >
-                                <Tooltip className={"tooltip"} direction="top" offset={[0, -57]}>
+                                <Tooltip className={"markerTooltip"} direction="top" offset={[0, -57]}>
                                     <div><strong>{point.name}</strong></div>
-                                    <div><strong>Тип: </strong>{point.type}</div>
+                                    <div><strong>Тип: </strong>{point.category.name}</div>
                                     <div>Нажмите, чтобы узнать подробности</div>
                                 </Tooltip>
                             </Marker>
@@ -112,7 +118,7 @@ const RouteMap = (props) => {
                          onClick={switchAddingMode}>
                         <img src={newMarker} alt=""/>
                     </div>
-                    <div className={style.controlButton} onClick={removeSearchParams}>
+                    <div className={style.controlButton} onClick={showRouteInfo}>
                         <img src={info} alt=""/>
                     </div>
                 </div>
@@ -122,7 +128,7 @@ const RouteMap = (props) => {
                 {addingPointMode ? <NewPointForm location={newPointLocation}/> : <div>
                     {pointId !== null
                         ? <PointDescription/>
-                        : <RouteDescription route={routeData.getRoute}/>
+                        : <RouteDescription route={routeData.route}/>
                     }</div>
                 }
 

@@ -1,65 +1,54 @@
-import React from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import style from './NewPointForm.module.scss'
 import {Input} from "../common/Input/Input";
 import {Form, Field, FormSpy,} from 'react-final-form'
-import SubmitButton from "../common/SubmitButton/SubmitButton";
+import Button from "../common/Button/Button";
 import {Textarea} from "../common/Textarea/Textarea";
 import {Select} from "../common/Select/Select";
-import {pointTypes} from "../../utils/pointTitles";
-import {newPointVar, pointsVar} from "../../store";
-import {useMutation, useReactiveVar} from "@apollo/client";
+import {newPointVar, newPointVarInitial, pointsVar} from "../../store";
+import {useMutation, useQuery, useReactiveVar} from "@apollo/client";
 import {Dropzone} from "../common/Dropzone/Dropzone";
-import {ADD_POINT} from "../../graphql/addPoint";
+import {CREATE_POINT} from "../../graphql/createPoint";
 import {useParams, useSearchParams} from "react-router-dom";
-import axios from "axios";
+import {GET_ALL_CATEGORIES} from "../../graphql/getAllCategories";
+
 
 const NewPointForm = ({location}) => {
-    const newPoint = useReactiveVar(newPointVar)
-
     const x = Number(location.lat)
     const y = Number(location.lng)
     const locationIsSet = location.lat * location.lng !== 0
 
-    const [addPoint] = useMutation(ADD_POINT)
-
+    const [addPoint] = useMutation(CREATE_POINT)
     const {id} = useParams()
     const setSearch = useSearchParams()[1]
 
+    const {data, loading} = useQuery(GET_ALL_CATEGORIES)
+
     const onSubmit = async (values) => {
-        console.log(values)
-        const photo = [...values.pointPhoto][0]
-        const formData = new FormData();
-        formData.append("image", photo);
-        Promise.all([
-            addPoint({
-                variables: {
-                    point: {
-                        routeId: Number(id),
-                        name: values.pointName,
-                        desc: values.pointDesc,
-                        type: values.pointType,
-                        x,
-                        y
-                    }
+        const image = values.pointImage ? {upload: [...values.pointImage][0]} : null
+        const result = await addPoint({
+            variables: {
+                data: {
+                    route: {connect: {id}},
+                    name: values.pointName,
+                    desc: values.pointDesc,
+                    category: {connect: {id: data.categories.find(cat => cat.name === values.pointCategory).id}},
+                    x,
+                    y,
+                    image: image
                 }
-            }),
-            axios.post('http://localhost:5000/route/0/point/6/image', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-            )
-        ]).then(([res, photoRes]) => {
-            console.log(photoRes)
-            setSearch({point: res.data.addPoint.id})
-            pointsVar([...pointsVar(), res.data.addPoint])
+            }
         })
+        newPointVar(newPointVarInitial)
+        setSearch({point: result.data.createPoint.id})
+        pointsVar([...pointsVar(), result.data.createPoint])
+
     }
 
     return (
         <div className={style.NewPointForm}>
-            <div className={style.Name}>{newPoint.name ? newPoint.name : "Новая точка"}</div>
-            {locationIsSet
+            <div className={style.Name}>{newPointVar().name ? newPointVar().name : "Новая точка"}</div>
+            {locationIsSet && !loading
                 ? <div>
                     <div><strong>x: </strong>{x}</div>
                     <div><strong>y: </strong>{y}</div>
@@ -67,33 +56,35 @@ const NewPointForm = ({location}) => {
                     <Form
                         onSubmit={onSubmit}
                         initialValues={{
-                            pointName: newPoint.name,
-                            pointDesc: newPoint.desc,
-                            pointType: newPoint.type
+                            pointName: newPointVar().name,
+                            pointDesc: newPointVar().desc,
+                            pointCategory: newPointVar().category.name,
+                            pointImage: newPointVar().image
                         }}
                         render={({handleSubmit}) => (
                             <form onSubmit={handleSubmit}>
                                 <FormSpy
                                     subscription={{values: true, modified: true}}
                                     onChange={props => {
-                                        if (props.modified) {
+                                        if (props.modified && data.categories.length > 0) {
                                             newPointVar({
                                                 ...newPointVar(),
                                                 name: props.values.pointName,
                                                 desc: props.values.pointDesc,
-                                                type: props.values.pointType
+                                                category: data.categories.find(cat => cat.name === props.values.pointCategory),
+                                                image: props.values.pointImage
                                             })
                                         }
                                     }}
                                 />
                                 <div>
                                     <Field
-                                        name={"pointPhoto"}
+                                        name={"pointImage"}
                                         component={"input"}
                                         type="file"
                                     >
                                         {props => <Dropzone {...props.input} value={props.input.value}
-                                                            onChange={props.input.onChange} photo={null}/>}
+                                                            onChange={props.input.onChange} photo={props.input.value}/>}
                                     </Field>
                                     <Field name="pointName">
                                         {props => (
@@ -119,11 +110,12 @@ const NewPointForm = ({location}) => {
                                             </div>
                                         )}
                                     </Field>
-                                    <Field name="pointType">
+                                    <Field name="pointCategory">
                                         {props => (
                                             <div>
                                                 <Select
-                                                    options={pointTypes}
+                                                    options={data.categories.map(cat => cat.name)}
+                                                    viewOption={'name'}
                                                     placeholder={"Тип точки на карте"}
                                                     name={props.input.name}
                                                     value={props.input.value}
@@ -133,7 +125,7 @@ const NewPointForm = ({location}) => {
                                         )}
                                     </Field>
                                 </div>
-                                <SubmitButton title="Создать"/>
+                                <Button type="submit" title="Создать"/>
                             </form>
                         )}
                     />

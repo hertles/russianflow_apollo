@@ -132,10 +132,8 @@ a, a:active, a:visited, a:link {
   cursor: crosshair!important;
 }
 
-.tooltip {
+.markerTooltip {
   width: max-content;
-  max-width: 30vw;
-  cursor: pointer;
   padding: 10px 20px;
   border-radius: 10px;
 }

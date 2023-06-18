@@ -8,10 +8,12 @@ import Preloader from "../common/Preloader/Preloader";
 const Main = (props) => {
     const [routes, setRoutes] = useState([])
 
-    const {data, loading} = useQuery(GET_ALL_ROUTES)
+    const {data, loading, error} = useQuery(GET_ALL_ROUTES)
     useEffect(() => {
-        if (!loading)
-            setRoutes(data.getAllRoutes)
+        if (!loading){
+            setRoutes(data.routes)
+
+        }
     }, [loading])
     if (loading) {
         return <div className={style.Main}>

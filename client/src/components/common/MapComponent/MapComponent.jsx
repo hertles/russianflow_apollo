@@ -11,7 +11,6 @@ const MapComponent = (props) => {
         zoom: 12
     })
     let center = [map.x, map.y];
-    console.log(props)
     return (
         <div className={props.className}>
             <MapContainer zoom={map.zoom} center={center} minZoom={props.big ? 4 : 12} maxZoom={props.big ? 8 : 14}>

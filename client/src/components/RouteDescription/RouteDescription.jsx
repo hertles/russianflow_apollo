@@ -6,7 +6,7 @@ const RouteDescription = ({route}) => {
         return (
             <div className={style.RouteDescription}>
                 <div className={style.Name}>{route.name}</div>
-                <div><img className={style.image} src={route.photo_url} alt="Фото маршрута"/></div>
+                <div><img className={style.image} src={route.image?.url} alt="Фото маршрута"/></div>
                 <div><strong>Тип маршрута: </strong>{route.type}</div>
                 <div><strong>Описание: </strong>{route.desc}</div>
                 <div><strong>x: </strong>{route.x}</div>

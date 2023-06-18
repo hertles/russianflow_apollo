@@ -5,12 +5,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client'
 import {BrowserRouter} from 'react-router-dom'
+import { createUploadLink } from "apollo-upload-client";
 
-
+const boundary = `boundary-${Math.random().toString().substr(2)}`; // Генерируем случайный boundary
 
 const client = new ApolloClient({
-    uri: 'http://localhost:5000/graphql',
-    cache: new InMemoryCache()
+    cache: new InMemoryCache(),
+    link: createUploadLink(
+        {
+            uri: 'http://localhost:2020/api/graphql',
+            fetch,
+            fetchOptions: { credentials: "include" },
+            headers: {
+                'apollo-require-preflight': true
+            }
+        }),
 });
 
 

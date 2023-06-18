@@ -1,15 +1,22 @@
 import {gql} from "@apollo/client";
 
- const GET_POINT = gql`query getPoint($id:ID!){
-    getPoint(id:$id){
+const GET_POINT = gql`query Query($id: ID!) {
+    point(where: {id: $id}) {
         id
+        name
+        category {
+            name
+        }
+        image {
+            url
+        }
+        croppedImage {
+            url
+        }
+        network
         x
         y
-        type
-        name
         desc
-        photo_url
-        network
     }
 }`
 

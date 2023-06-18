@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 
 function Item({item}) {
     return (
-        <Link to={`/map/${item.id}/`}><div className={style.innerPoint}><img className={style.image} src={item.photo_url}/>
+        <Link to={`/map/${item.id}/`}><div className={style.innerPoint}><img className={style.image} src={item.image?.url}/>
             <div className={style.name}>{item.name}</div>
             <div className={style.desc}>{item.desc}</div>
             <div className={style.type}>{item.type}</div>

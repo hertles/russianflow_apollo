@@ -9,13 +9,14 @@
     justify-content: space-between;
     align-items: center;
     z-index: 100;
+    box-shadow: 2px 0 2px 0 rgba(0, 0, 0, 0.1);
 }
 .logo {
     position: relative;
     display: block;
     height: 90%;
     left: 1vw;
-    top: 0vh;
+    top: 0;
     object-fit: cover;
     filter: grayscale(1);
     &:hover{
@@ -58,7 +59,7 @@
     height: 100%;
     display: grid;
     align-items: center;
-    padding: 0px 20px;
+    padding: 0 20px;
     cursor: pointer;
     text-align: center;
 }

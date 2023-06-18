@@ -1,6 +1,7 @@
 import style from './Select.module.scss'
 
-export const Select = ({placeholder, value, checked, name, onChange, options, ...restInput}) => {
+export const Select = ({placeholder, value, checked, name, onChange, options, viewOption, ...restInput}) => {
+
     return (
         <select
             {...restInput}
@@ -11,9 +12,11 @@ export const Select = ({placeholder, value, checked, name, onChange, options, ..
             onChange={onChange}
             placeholder={placeholder}
         >
-            {Object.keys(options).map(option=>(
-                <option key={option} value={option}>
-                    {option}
-                </option>))}
+            {options.map(option=> {
+                return (
+                    <option key={option} value={option}>
+                        {option}
+                    </option>)
+            })}
         </select>)
 }

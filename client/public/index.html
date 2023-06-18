@@ -33,18 +33,6 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--<script>
-      if ('serviceWorker' in navigator){
-        window.addEventListener('load', ()=>{
-          navigator.serviceWorker.register(`%PUBLIC_URL%/sw.js`).catch((error)=>{
-            let errorLog='Ошибка! Service Worker не зарегистрирован: '+error
-            alert(errorLog)
-            console.log(errorLog)
-          })
-        })
-      }
-
-    </script>-->
     <script type="module">
 
       import {Workbox} from 'https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-window.prod.mjs';

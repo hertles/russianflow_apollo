@@ -28,6 +28,7 @@
   background-color: #eee;
   border: 10px transparent;
   overflow: auto;
+  box-shadow: 2px 0 2px 0 rgba(0, 0, 0, 0.1);
 
   &:after {
     padding: 10px;
@@ -48,9 +49,10 @@
   width: 40px;
   height: 40px;
   background-color: #eee;
-  border: 2px solid rgba(0,0,0,0.2);
+  border: 2px solid rgba(0,0,0,.2);
   border-radius: 4px;
   cursor: pointer;
+  box-shadow: 2px 0 2px 0 rgba(0,0,0,.1);
 
   & > img {
     margin: 0 auto;

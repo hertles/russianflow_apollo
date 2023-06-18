@@ -23,7 +23,7 @@ self.addEventListener('fetch', async (event) => {
     }
 });
     workbox.routing.registerRoute(
-        new RegExp('localhost:5000/graphql(/)?'),
+        new RegExp('localhost:2020/api/graphql(/)?'),
         async ({event}) => {
             return staleWhileRevalidate(event);
         },
@@ -99,8 +99,8 @@ async function getPostKey(request) {
 workbox.recipes.pageCache()
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST)
 workbox.routing.registerRoute(
-    /http:\/\/localhost:5000\/src\/images\/maps\/*\/*\/*/,
-    new workbox.strategies.StaleWhileRevalidate({
+    /http:\/\/localhost:2020\/api\/maps\/*\/*\/*/,
+    new workbox.strategies.CacheFirst({
         cacheName: 'images'
     })
 )
