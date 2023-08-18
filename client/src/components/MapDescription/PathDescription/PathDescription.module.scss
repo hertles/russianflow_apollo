@@ -1,6 +1,6 @@
-@import "../../assets/css/mixins";
+@import "../../../assets/css/mixins";
 
-.pointDescription{
+.pathDescription{
     @include flex-column;
     gap: 10px;
 }

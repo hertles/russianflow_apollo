@@ -45,9 +45,32 @@ model Point {
   @@index([routeId])
 }
 
+model Path {
+  id       String  @id @default(cuid())
+  route    Route?  @relation("Path_route", fields: [routeId], references: [id])
+  routeId  String? @map("route")
+  distance Float?
+  desc     String  @default("")
+  nodes    Node[]  @relation("Node_path")
+
+  @@index([routeId])
+}
+
+model Node {
+  id     String  @id @default(cuid())
+  path   Path?   @relation("Node_path", fields: [pathId], references: [id])
+  pathId String? @map("path")
+  index  Int?
+  x      Float?
+  y      Float?
+
+  @@index([pathId])
+  @@index([index])
+}
+
 model Category {
   id                    String  @id @default(cuid())
-  name                  String  @default("")
+  name                  String  @unique @default("")
   points                Point[] @relation("Point_category")
   image_filesize        Int?
   image_extension       String?
@@ -59,8 +82,6 @@ model Category {
   activeImage_width     Int?
   activeImage_height    Int?
   activeImage_id        String?
-
-  @@index([name])
 }
 
 model Route {
@@ -71,6 +92,7 @@ model Route {
   x               Float
   y               Float
   points          Point[] @relation("Point_route")
+  paths           Path[]  @relation("Path_route")
   image_filesize  Int?
   image_extension String?
   image_width     Int?

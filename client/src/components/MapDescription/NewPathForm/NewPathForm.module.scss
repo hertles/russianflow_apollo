@@ -1,0 +1,16 @@
+@import '../../../assets/css/mixins';
+
+.NewPathForm{
+    @include flex-column;
+}
+
+.Name{
+    border-radius: 10px;
+    background-color: #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.loading {
+    margin: 10px 0;
+}

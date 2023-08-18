@@ -1,30 +1,42 @@
 import React, {useEffect, useState} from 'react';
 import style from './PointDescription.module.scss'
-import {useQuery} from "@apollo/client";
-import GET_POINT from "../../graphql/getPoint";
+import {useMutation, useQuery} from "@apollo/client";
+import GET_POINT from "../../../graphql/getPoint";
 import {useSearchParams} from "react-router-dom";
-import Button from "../common/Button/Button";
+import Button from "../../common/Button/Button";
+import {DELETE_POINT} from "../../../graphql/deletePoint";
+import {pointsVar} from "../../../store";
 
 const PointDescription = () => {
-    const [search] = useSearchParams()
+    const [search, setSearch] = useSearchParams()
     const pointId = search.get('point')
     const [point, setPoint] = useState({})
     const {data, loading} = useQuery(GET_POINT, {variables: {id: pointId}})
+    const [deletePoint] = useMutation(DELETE_POINT)
+
+    const deleteCurrentPoint = async () => {
+        await deletePoint({
+            variables: {
+                id: pointId
+            }
+        })
+        setSearch({})
+        pointsVar([...pointsVar().filter(point=>point.id!==pointId)])
+    }
 
     useEffect(() => {
-        if (!loading) {
+        if (data && !loading) {
             setPoint(data.point)
         }
-    }, [loading, pointId])
+    }, [data, loading, pointId])
     if (loading) {
         return <div className={"toCenter"}>Загрузка...</div>
     }
-    console.log(point)
-    if (point.name) {
+    if (point?.name) {
         return (
             <div className={style.pointDescription}>
                 <div className={style.name}>{point.name}</div>
-                {point.croppedImage && <img className={style.image} src={point.croppedImage.url}/>}
+                {point.croppedImage && <img alt={"Изображение места"} className={style.image} src={point.croppedImage.url}/>}
                 <div className={style.info}>
                     <div><strong>Тип точки: </strong>{point.category.name}</div>
                     <div><strong>Описание: </strong>{point.desc}</div>
@@ -33,7 +45,7 @@ const PointDescription = () => {
                     <div><strong>y: </strong>{point.y}</div>
                 </div>
                 <div className={style.buttons}>
-                    <Button type={"button"} title={"Удалить точку"}/>
+                    <Button onClick={deleteCurrentPoint} type={"button"} title={"Удалить точку"}/>
                 </div>
             </div>
         );

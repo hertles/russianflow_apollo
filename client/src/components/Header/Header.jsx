@@ -6,21 +6,21 @@ import burger_button from '../../assets/images/burger_menu.png'
 
 function Header() {
 
-    const [online,setOnline] = useState(navigator.onLine)
+    const [online, setOnline] = useState(navigator.onLine)
 
-    useEffect(()=>{
-        setInterval(()=>{
+    useEffect(() => {
+        setInterval(() => {
             setOnline(navigator.onLine)
-        },5000)
-    },[])
+        }, 5000)
+    }, [])
 
-    const [downlink,setDownlink] = useState(navigator.connection.downlink)
+    const [downlink, setDownlink] = useState(navigator.connection.downlink)
 
-    useEffect(()=>{
-        setInterval(()=>{
+    useEffect(() => {
+        setInterval(() => {
             setDownlink(navigator.connection.downlink)
-        },5000)
-    },[])
+        }, 5000)
+    }, [])
 
     return (
         <div className={style.Header}>
@@ -30,11 +30,11 @@ function Header() {
                         <img className={style.logo} src={logo} alt=""/>
                     </Link>
                 </div>
-                <div className={`${style.RussianFlow} ${style.HeaderButton}`}>
-                    <NavLink to="/">
+                <NavLink to="/">
+                    <div className={`${style.RussianFlow} ${style.HeaderButton}`}>
                         RussianFlow
-                    </NavLink>
-                </div>
+                    </div>
+                </NavLink>
             </div>
 
             {!online &&
@@ -43,7 +43,7 @@ function Header() {
                 </div>
             }
 
-            {online && downlink<1 &&
+            {online && downlink < 1 &&
                 <div className={style.networkStatus}>
                     Внимание! Низкая скорость соединения!
                 </div>

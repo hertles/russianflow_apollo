@@ -1,22 +1,22 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React from 'react';
 import style from './NewPointForm.module.scss'
-import {Input} from "../common/Input/Input";
+import {Input} from "../../common/Input/Input";
 import {Form, Field, FormSpy,} from 'react-final-form'
-import Button from "../common/Button/Button";
-import {Textarea} from "../common/Textarea/Textarea";
-import {Select} from "../common/Select/Select";
-import {newPointVar, newPointVarInitial, pointsVar} from "../../store";
-import {useMutation, useQuery, useReactiveVar} from "@apollo/client";
-import {Dropzone} from "../common/Dropzone/Dropzone";
-import {CREATE_POINT} from "../../graphql/createPoint";
+import Button from "../../common/Button/Button";
+import {Textarea} from "../../common/Textarea/Textarea";
+import {Select} from "../../common/Select/Select";
+import {newPointVar, newPointVarInitial, pointsVar} from "../../../store";
+import {useMutation, useQuery} from "@apollo/client";
+import {Dropzone} from "../../common/Dropzone/Dropzone";
+import {CREATE_POINT} from "../../../graphql/createPoint";
 import {useParams, useSearchParams} from "react-router-dom";
-import {GET_ALL_CATEGORIES} from "../../graphql/getAllCategories";
+import {GET_ALL_CATEGORIES} from "../../../graphql/getAllCategories";
 
 
-const NewPointForm = ({location}) => {
-    const x = Number(location.lat)
-    const y = Number(location.lng)
-    const locationIsSet = location.lat * location.lng !== 0
+const NewPointForm = ({newPoint}) => {
+    const x = Number(newPoint.lat)
+    const y = Number(newPoint.lng)
+    const locationIsSet = newPoint.lat * newPoint.lng !== 0
 
     const [addPoint] = useMutation(CREATE_POINT)
     const {id} = useParams()
@@ -45,9 +45,21 @@ const NewPointForm = ({location}) => {
 
     }
 
+    const formChangeHandler = props => {
+        if (props.modified && data.categories.length > 0) {
+            newPointVar({
+                ...newPointVar(),
+                name: props.values.pointName,
+                desc: props.values.pointDesc,
+                category: data.categories.find(cat => cat.name === props.values.pointCategory),
+                image: props.values.pointImage
+            })
+        }
+    }
+
     return (
         <div className={style.NewPointForm}>
-            <div className={style.Name}>{newPointVar().name ? newPointVar().name : "Новая точка"}</div>
+            <div className={style.Name}>{newPoint.name ? newPoint.name : "Новая точка"}</div>
             {locationIsSet && !loading
                 ? <div>
                     <div><strong>x: </strong>{x}</div>
@@ -56,26 +68,16 @@ const NewPointForm = ({location}) => {
                     <Form
                         onSubmit={onSubmit}
                         initialValues={{
-                            pointName: newPointVar().name,
-                            pointDesc: newPointVar().desc,
-                            pointCategory: newPointVar().category.name,
-                            pointImage: newPointVar().image
+                            pointName: newPoint.name,
+                            pointDesc: newPoint.desc,
+                            pointCategory: newPoint.category.name,
+                            pointImage: newPoint.image
                         }}
                         render={({handleSubmit}) => (
                             <form onSubmit={handleSubmit}>
                                 <FormSpy
                                     subscription={{values: true, modified: true}}
-                                    onChange={props => {
-                                        if (props.modified && data.categories.length > 0) {
-                                            newPointVar({
-                                                ...newPointVar(),
-                                                name: props.values.pointName,
-                                                desc: props.values.pointDesc,
-                                                category: data.categories.find(cat => cat.name === props.values.pointCategory),
-                                                image: props.values.pointImage
-                                            })
-                                        }
-                                    }}
+                                    onChange={formChangeHandler}
                                 />
                                 <div>
                                     <Field
@@ -90,7 +92,7 @@ const NewPointForm = ({location}) => {
                                         {props => (
                                             <div>
                                                 <Input
-                                                    placeholder={"Название"}
+                                                    placeholder={"Название точки"}
                                                     name={props.input.name}
                                                     value={props.input.value}
                                                     onChange={props.input.onChange}
@@ -102,7 +104,7 @@ const NewPointForm = ({location}) => {
                                         {props => (
                                             <div>
                                                 <Textarea
-                                                    placeholder={"Описание"}
+                                                    placeholder={"Описание точки"}
                                                     name={props.input.name}
                                                     value={props.input.value}
                                                     onChange={props.input.onChange}

@@ -11,6 +11,14 @@ export const GET_ROUTE = gql`query Query($id: ID!) {
         }
         name
         rating
+        paths {
+            id
+            desc
+            nodes {
+                x
+                y
+            }
+        }
         points {
             id
             name

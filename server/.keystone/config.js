@@ -52,25 +52,15 @@ var resizeImage = async (item) => {
 var import_fields = require("@keystone-6/core/fields");
 var lists = {
   User: (0, import_core.list)({
-    // WARNING
-    //   for this starter project, anyone can create, query, update and delete anything
-    //   if you want to prevent random people on the internet from accessing your data,
-    //   you can find out more at https://keystonejs.com/docs/guides/auth-and-access-control
     access: import_access.allowAll,
-    // this is the fields for our User list
     fields: {
-      // by adding isRequired, we enforce that every User should have a name
-      //   if no name is provided, an error will be displayed
       name: (0, import_fields.text)({ validation: { isRequired: true } }),
       email: (0, import_fields.text)({
         validation: { isRequired: true },
-        // by adding isIndexed: 'unique', we're saying that no user can have the same
-        // email as another user - this may or may not be a good idea for your project
         isIndexed: "unique"
       }),
       password: (0, import_fields.password)({ validation: { isRequired: true } }),
       createdAt: (0, import_fields.timestamp)({
-        // this sets the timestamp to Date.now() when the user is first created
         defaultValue: { kind: "now" }
       })
     }
@@ -103,7 +93,7 @@ var lists = {
     hooks: {
       resolveInput: ({ resolvedData }) => {
         const { name, image: image2 } = resolvedData;
-        const croppedImageHeight = image2.height && image2.width ? Number(image2.height) * 420 / Number(image2.width) : 300;
+        const croppedImageHeight = image2.height && image2.width ? Math.floor(Number(image2.height) * 420 / Number(image2.width)) : 300;
         if (name && image2) {
           const croppedImage = {
             id: image2.id + "-cropped",
@@ -120,17 +110,38 @@ var lists = {
         }
         return resolvedData;
       },
-      afterOperation: ({ operation, item }) => {
+      afterOperation: async ({ operation, item }) => {
         if (operation === "create" && item?.image_id) {
-          resizeImage(item);
+          await resizeImage(item);
         }
       }
+    }
+  }),
+  Path: (0, import_core.list)({
+    access: import_access.allowAll,
+    fields: {
+      route: (0, import_fields.relationship)({ ref: "Route.paths" }),
+      distance: (0, import_fields.float)(),
+      desc: (0, import_fields.text)(),
+      nodes: (0, import_fields.relationship)({ ref: "Node.path", many: true })
+    }
+  }),
+  Node: (0, import_core.list)({
+    access: import_access.allowAll,
+    ui: {
+      isHidden: true
+    },
+    fields: {
+      path: (0, import_fields.relationship)({ ref: "Path.nodes" }),
+      index: (0, import_fields.integer)({ isIndexed: true }),
+      x: (0, import_fields.float)(),
+      y: (0, import_fields.float)()
     }
   }),
   Category: (0, import_core.list)({
     access: import_access.allowAll,
     fields: {
-      name: (0, import_fields.text)({ isIndexed: true, validation: { isRequired: true } }),
+      name: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } }),
       points: (0, import_fields.relationship)({
         ref: "Point.category",
         many: true
@@ -153,6 +164,10 @@ var lists = {
       y: (0, import_fields.float)({ validation: { isRequired: true } }),
       points: (0, import_fields.relationship)({
         ref: "Point.route",
+        many: true
+      }),
+      paths: (0, import_fields.relationship)({
+        ref: "Path.route",
         many: true
       }),
       image: (0, import_fields.image)({

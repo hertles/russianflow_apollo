@@ -1,10 +1,16 @@
 import React from 'react';
-import style from './Button.module.scss'
+import style from "./Button.module.scss"
+import classNames from "classnames";
 
-function Button(props) {
-    const title = props.title || "Отправить"
+function Button({title,disabled,type, onClick}) {
     return (
-        <button type={props.type} className={style.button}>{title}</button>
+        <button
+            onClick={onClick}
+            disabled={disabled}
+            type={type}
+            className={classNames([style.button,{[style.disabled]: disabled}])}>
+            {title || 'Отправить'}
+        </button>
     );
 }
 

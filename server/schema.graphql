@@ -236,6 +236,155 @@ input RouteRelateToOneForCreateInput {
   connect: RouteWhereUniqueInput
 }
 
+type Path {
+  id: ID!
+  route: Route
+  distance: Float
+  desc: String
+  nodes(where: NodeWhereInput! = {}, orderBy: [NodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: NodeWhereUniqueInput): [Node!]
+  nodesCount(where: NodeWhereInput! = {}): Int
+}
+
+input PathWhereUniqueInput {
+  id: ID
+}
+
+input PathWhereInput {
+  AND: [PathWhereInput!]
+  OR: [PathWhereInput!]
+  NOT: [PathWhereInput!]
+  id: IDFilter
+  route: RouteWhereInput
+  distance: FloatNullableFilter
+  desc: StringFilter
+  nodes: NodeManyRelationFilter
+}
+
+input FloatNullableFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatNullableFilter
+}
+
+input NodeManyRelationFilter {
+  every: NodeWhereInput
+  some: NodeWhereInput
+  none: NodeWhereInput
+}
+
+input PathOrderByInput {
+  id: OrderDirection
+  distance: OrderDirection
+  desc: OrderDirection
+}
+
+input PathUpdateInput {
+  route: RouteRelateToOneForUpdateInput
+  distance: Float
+  desc: String
+  nodes: NodeRelateToManyForUpdateInput
+}
+
+input NodeRelateToManyForUpdateInput {
+  disconnect: [NodeWhereUniqueInput!]
+  set: [NodeWhereUniqueInput!]
+  create: [NodeCreateInput!]
+  connect: [NodeWhereUniqueInput!]
+}
+
+input PathUpdateArgs {
+  where: PathWhereUniqueInput!
+  data: PathUpdateInput!
+}
+
+input PathCreateInput {
+  route: RouteRelateToOneForCreateInput
+  distance: Float
+  desc: String
+  nodes: NodeRelateToManyForCreateInput
+}
+
+input NodeRelateToManyForCreateInput {
+  create: [NodeCreateInput!]
+  connect: [NodeWhereUniqueInput!]
+}
+
+type Node {
+  id: ID!
+  path: Path
+  index: Int
+  x: Float
+  y: Float
+}
+
+input NodeWhereUniqueInput {
+  id: ID
+}
+
+input NodeWhereInput {
+  AND: [NodeWhereInput!]
+  OR: [NodeWhereInput!]
+  NOT: [NodeWhereInput!]
+  id: IDFilter
+  path: PathWhereInput
+  index: IntNullableFilter
+  x: FloatNullableFilter
+  y: FloatNullableFilter
+}
+
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
+input NodeOrderByInput {
+  id: OrderDirection
+  index: OrderDirection
+  x: OrderDirection
+  y: OrderDirection
+}
+
+input NodeUpdateInput {
+  path: PathRelateToOneForUpdateInput
+  index: Int
+  x: Float
+  y: Float
+}
+
+input PathRelateToOneForUpdateInput {
+  create: PathCreateInput
+  connect: PathWhereUniqueInput
+  disconnect: Boolean
+}
+
+input NodeUpdateArgs {
+  where: NodeWhereUniqueInput!
+  data: NodeUpdateInput!
+}
+
+input NodeCreateInput {
+  path: PathRelateToOneForCreateInput
+  index: Int
+  x: Float
+  y: Float
+}
+
+input PathRelateToOneForCreateInput {
+  create: PathCreateInput
+  connect: PathWhereUniqueInput
+}
+
 type Category {
   id: ID!
   name: String
@@ -247,6 +396,7 @@ type Category {
 
 input CategoryWhereUniqueInput {
   id: ID
+  name: String
 }
 
 input CategoryWhereInput {
@@ -309,6 +459,8 @@ type Route {
   y: Float
   points(where: PointWhereInput! = {}, orderBy: [PointOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PointWhereUniqueInput): [Point!]
   pointsCount(where: PointWhereInput! = {}): Int
+  paths(where: PathWhereInput! = {}, orderBy: [PathOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PathWhereUniqueInput): [Path!]
+  pathsCount(where: PathWhereInput! = {}): Int
   image: ImageFieldOutput
 }
 
@@ -327,17 +479,13 @@ input RouteWhereInput {
   x: FloatFilter
   y: FloatFilter
   points: PointManyRelationFilter
+  paths: PathManyRelationFilter
 }
 
-input FloatNullableFilter {
-  equals: Float
-  in: [Float!]
-  notIn: [Float!]
-  lt: Float
-  lte: Float
-  gt: Float
-  gte: Float
-  not: FloatNullableFilter
+input PathManyRelationFilter {
+  every: PathWhereInput
+  some: PathWhereInput
+  none: PathWhereInput
 }
 
 input RouteOrderByInput {
@@ -356,7 +504,15 @@ input RouteUpdateInput {
   x: Float
   y: Float
   points: PointRelateToManyForUpdateInput
+  paths: PathRelateToManyForUpdateInput
   image: ImageFieldInput
+}
+
+input PathRelateToManyForUpdateInput {
+  disconnect: [PathWhereUniqueInput!]
+  set: [PathWhereUniqueInput!]
+  create: [PathCreateInput!]
+  connect: [PathWhereUniqueInput!]
 }
 
 input RouteUpdateArgs {
@@ -371,7 +527,13 @@ input RouteCreateInput {
   x: Float
   y: Float
   points: PointRelateToManyForCreateInput
+  paths: PathRelateToManyForCreateInput
   image: ImageFieldInput
+}
+
+input PathRelateToManyForCreateInput {
+  create: [PathCreateInput!]
+  connect: [PathWhereUniqueInput!]
 }
 
 """
@@ -392,6 +554,18 @@ type Mutation {
   updatePoints(data: [PointUpdateArgs!]!): [Point]
   deletePoint(where: PointWhereUniqueInput!): Point
   deletePoints(where: [PointWhereUniqueInput!]!): [Point]
+  createPath(data: PathCreateInput!): Path
+  createPaths(data: [PathCreateInput!]!): [Path]
+  updatePath(where: PathWhereUniqueInput!, data: PathUpdateInput!): Path
+  updatePaths(data: [PathUpdateArgs!]!): [Path]
+  deletePath(where: PathWhereUniqueInput!): Path
+  deletePaths(where: [PathWhereUniqueInput!]!): [Path]
+  createNode(data: NodeCreateInput!): Node
+  createNodes(data: [NodeCreateInput!]!): [Node]
+  updateNode(where: NodeWhereUniqueInput!, data: NodeUpdateInput!): Node
+  updateNodes(data: [NodeUpdateArgs!]!): [Node]
+  deleteNode(where: NodeWhereUniqueInput!): Node
+  deleteNodes(where: [NodeWhereUniqueInput!]!): [Node]
   createCategory(data: CategoryCreateInput!): Category
   createCategories(data: [CategoryCreateInput!]!): [Category]
   updateCategory(where: CategoryWhereUniqueInput!, data: CategoryUpdateInput!): Category
@@ -433,6 +607,12 @@ type Query {
   points(where: PointWhereInput! = {}, orderBy: [PointOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PointWhereUniqueInput): [Point!]
   point(where: PointWhereUniqueInput!): Point
   pointsCount(where: PointWhereInput! = {}): Int
+  paths(where: PathWhereInput! = {}, orderBy: [PathOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PathWhereUniqueInput): [Path!]
+  path(where: PathWhereUniqueInput!): Path
+  pathsCount(where: PathWhereInput! = {}): Int
+  nodes(where: NodeWhereInput! = {}, orderBy: [NodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: NodeWhereUniqueInput): [Node!]
+  node(where: NodeWhereUniqueInput!): Node
+  nodesCount(where: NodeWhereInput! = {}): Int
   categories(where: CategoryWhereInput! = {}, orderBy: [CategoryOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CategoryWhereUniqueInput): [Category!]
   category(where: CategoryWhereUniqueInput!): Category
   categoriesCount(where: CategoryWhereInput! = {}): Int

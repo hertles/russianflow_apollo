@@ -1,5 +1,6 @@
 @mixin flex-center {
   display: flex;
+  gap: 10px;
   align-items: center;
   justify-content: center;
 }
@@ -7,6 +8,14 @@
 @mixin flex-column {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+}
+
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
 }
 

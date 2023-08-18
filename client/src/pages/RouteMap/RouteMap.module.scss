@@ -35,43 +35,6 @@
   }
 }
 
-.controlPanel {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding: 10px;
-  display: flex;
-  gap: 10px;
-}
-
-.controlButton {
-  @include flex-center;
-  width: 40px;
-  height: 40px;
-  background-color: #eee;
-  border: 2px solid rgba(0,0,0,.2);
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: 2px 0 2px 0 rgba(0,0,0,.1);
-
-  & > img {
-    margin: 0 auto;
-    width: 80%;
-  }
-
-  &:hover {
-    background-color: #ddd;
-  }
-
-  &__active {
-    background-color: #ccc;
-
-    &:hover {
-      background-color: #bbb;
-    }
-  }
-}
-
 @media screen and (max-width: 700px) {
   body {
     overflow-y: hidden;

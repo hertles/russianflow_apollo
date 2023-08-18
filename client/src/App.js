@@ -2,10 +2,10 @@ import './assets/css/main.scss';
 import React from "react";
 import Header from "./components/Header/Header";
 import {Routes, Route} from 'react-router-dom'
-import Main from "./components/Main/Main";
+import Main from "./pages/Main/Main";
 import 'leaflet/dist/leaflet.css';
-import BigMap from "./components/BigMap/BigMap";
-import RouteMap from "./components/RouteMap/RouteMap";
+import BigMap from "./pages/BigMap/BigMap";
+import RouteMap from "./pages/RouteMap/RouteMap";
 
 function App() {
 
